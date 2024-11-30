@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwg1aeawx7uus"]
+
+[ext_resource type="PackedScene" uid="uid://cauy8uf6hiuf" path="res://scenes/player.tscn" id="1_g7oon"]
+[ext_resource type="Script" path="res://scripts/level.gd" id="1_imqvh"]
+[ext_resource type="PackedScene" uid="uid://cw4dgahgkovmw" path="res://scenes/enemy.tscn" id="2_a8v2c"]
+
+[node name="level" type="Node"]
+script = ExtResource("1_imqvh")
+enemy_scene = ExtResource("2_a8v2c")
+
+[node name="Player" parent="." instance=ExtResource("1_g7oon")]
+position = Vector2(0, 0)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(240, 360)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
