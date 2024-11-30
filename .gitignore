@@ -1,0 +1,14 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+# Ignorar temporales
+*.tmp
+
+# Ignorar carpetas específicas de Godot
+.import/
+.godot/
+
+# No ignorar tus carpetas esenciales
+!assets/
+!scenes/
+!scripts/
