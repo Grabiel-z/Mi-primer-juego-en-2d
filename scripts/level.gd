@@ -7,8 +7,9 @@ var score
 
 #empezar juego
 func _ready() -> void:
-	new_game()
 	$Player.connect('hit', game_over)
+	$HUB.connect('start_game', new_game) #conectando señales para play
+	
 	
 #generar una scena cada 2 segundo con timer nodos. #timerenemy
 func _on_timer_timeout() -> void:
@@ -27,14 +28,26 @@ func _on_timer_timeout() -> void:
 func new_game():
 	$Player.start($Marker2D.position)
 	score = 0
-	$TimerScore.start()
-	$TimerEnemy.start()
+	$TimerStart.start()
+	$HUB.show_message("comenzando juego")
+	$HUB.update_score(score)
+	get_tree().call_group("enemy group", "queue_free")
+	$Music.play()
 
 func game_over():
-	print('perdiste')
+	print('game over')
 	$TimerScore.stop()
 	$TimerEnemy.stop()
+	$HUB.show_game_over()
+	$Music.stop()
+	$GameOver.play()
 
 func _on_timer_score_timeout() -> void:
 	score +=1
-	print(score)
+	$HUB.update_score(score)
+	
+
+
+func _on_timer_start_timeout() -> void:
+	$TimerEnemy.start()
+	$TimerScore.start()
