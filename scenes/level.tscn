@@ -1,8 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://bwg1aeawx7uus"]
+[gd_scene load_steps=5 format=3 uid="uid://bwg1aeawx7uus"]
 
 [ext_resource type="PackedScene" uid="uid://cauy8uf6hiuf" path="res://scenes/player.tscn" id="1_g7oon"]
 [ext_resource type="Script" path="res://scripts/level.gd" id="1_imqvh"]
 [ext_resource type="PackedScene" uid="uid://cw4dgahgkovmw" path="res://scenes/enemy.tscn" id="2_a8v2c"]
+
+[sub_resource type="Curve2D" id="Curve2D_qotpl"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 478, 3, 0, 0, 0, 0, 480, 715, 0, 0, 0, 0, -4, 710, 0, 0, 0, 0, -4, 8, 0, 0, 0, 0, -5, -3, 0, 0, 0, 0, 478, -3, 0, 0, 0, 0, 478, 714, 0, 0, 0, 0, -6, 706, 0, 0, 0, 0, -9, 347, 0, 0, 0, 0, 3, -4, 0, 0, 0, 0, 231, -9, 0, 0, 0, 0, -8, 343, 0, 0, 0, 0, 476, 346, 0, 0, 0, 0, 234, -13, 0, 0, 0, 0, 231, 711, 0, 0, 0, 0, -13, 344, 0, 0, 0, 0, 478, 343, 0, 0, 0, 0, 231, 709, 0, 0, 0, 0, 480, 707, 0, 0, 0, 0, 477, 343, 0, 0, 0, 0, 477, -4, 0, 0, 0, 0, -1, 0)
+}
+point_count = 23
 
 [node name="level" type="Node"]
 script = ExtResource("1_imqvh")
@@ -11,11 +17,20 @@ enemy_scene = ExtResource("2_a8v2c")
 [node name="Player" parent="." instance=ExtResource("1_g7oon")]
 position = Vector2(0, 0)
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
-autostart = true
+[node name="TimerEnemy" type="Timer" parent="."]
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(240, 360)
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_qotpl")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-1, 0)
+rotation = 0.00626297
+
+[node name="TimerScore" type="Timer" parent="."]
+wait_time = 1.5
+
+[connection signal="timeout" from="TimerEnemy" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="TimerScore" to="." method="_on_timer_score_timeout"]
